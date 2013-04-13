@@ -1,0 +1,19 @@
+!!! 5
+html
+  head
+    title Wut wut
+    != css('graph')
+    != css('doughnut')
+
+    script
+      window.hashtag = "#{hashtag}";
+      window.App = {};
+  body
+    #header
+    #spin
+    #content
+
+    != js('vendor/spin')
+    != js('spinner')
+    != js('vendor/d3')
+    != js('graphs/doughnut')

@@ -9,7 +9,11 @@ module.exports = (app) ->
 
   app.get '/graph/tree/:user', controllers.example.tree
 
+  app.get '/graph/doughnut/:tag', controllers.example.doughnut
+
   app.get '/graph/:id', controllers.example.graph
+
+  app.get '/api/nestedTag/:tag', controllers.api.nestedTags
 
   app.get '/api/tag/:tag', (req, res, next) ->
     controllers.api.tag req, res, next

@@ -95,5 +95,13 @@ tag = (req, res, next) ->
         data: names
       }
 
+nestedTags = (req, res, next) ->
+
+  hashtag = req.params.tag
+
+  ig.getHashtag hashtag, (err, data) ->
+
+    res.send data
 
 exports.tag = tag
+exports.nestedTags = nestedTags
