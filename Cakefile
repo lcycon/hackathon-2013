@@ -21,7 +21,7 @@ log = (message, color, explanation) ->
 
 # Compiles app.coffee and src directory to the .app directory
 build = (callback) ->
-  options = ['-c','-b', '-o', '.app', 'src']
+  options = ['-c','-b', '-I', 'inline', '-o', '.app', 'src']
   cmd = which.sync 'iced'
   coffee = spawn cmd, options
   coffee.stdout.pipe process.stdout
@@ -83,7 +83,7 @@ task 'compile', 'Compile jade files', ->
 
 task 'dev', 'start dev env', ->
   # watch_coffee
-  options = ['-c', '-b', '-w', '-o', '.app', 'src']
+  options = ['-c', '-b', '-i', 'inline', '-w', '-o', '.app', 'src']
   cmd = which.sync 'iced'  
   coffee = spawn cmd, options
   coffee.stdout.pipe process.stdout
@@ -104,7 +104,7 @@ task 'dev', 'start dev env', ->
   
 task 'debug', 'start debug env', ->
   # watch_coffee
-  options = ['-c', '-b', '-w', '-o', '.app', 'src']
+  options = ['-c', '-b', '-i', 'inline', '-w', '-o', '.app', 'src']
   cmd = which.sync 'iced'  
   coffee = spawn cmd, options
   coffee.stdout.pipe process.stdout
