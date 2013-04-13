@@ -45,8 +45,6 @@ d3.json "/api/tag/#{window.hashtag}", (data) ->
   layout.matrix(data.matrix)
 
   mouseover = (d, i) ->
-    console.log "Source index #{i}"
-    console.log d
     chord.classed "fade", (p) ->
       p.source.index != i && p.target.index != i
 
