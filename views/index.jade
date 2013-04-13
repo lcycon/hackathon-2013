@@ -3,13 +3,14 @@ html
   head
     title= title
     != css('index')
+    != css('graph')
 
     script
       window.App = {};
   body
     #header
-      | fuck
     #content
 
-    != js('main')
+    != js('vendor/jquery-1.9.1')
     != js('vendor/bootstrap')
+    != js('graphs/adams-graph')
