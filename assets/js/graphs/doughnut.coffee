@@ -27,6 +27,12 @@ d3.json "/api/nestedTag/#{window.hashtag}", (data) ->
     .attr("fill", (d, i) -> color i)
     .attr("d", arc)
 
+  clickhandle = (d, i) ->
+    window.location = "/graph/doughnut/#{keys[i]}"
+
+  svg.selectAll(".group")
+    .on("click", clickhandle)
+
   svg.append("text")
     .attr("fill", "white")
     .attr("text-anchor", "middle")
