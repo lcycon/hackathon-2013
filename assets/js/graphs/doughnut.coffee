@@ -1,25 +1,26 @@
 renderGraph = ->
-  width = 720
-  height = 720
-  radius = Math.min(width, height) / 2
-
-  color = d3.scale.category20()
-
-  pie = d3.layout.pie()
-    .sort(null)
-
-  arc = d3.svg.arc()
-    .innerRadius(radius - 100)
-    .outerRadius(radius - 20)
-
-  svg = d3.select("#content").append("svg")
-      .attr("width", width)
-      .attr("height", height)
-      .attr("id", "mainsvg")
-    .append("g")
-      .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
 
   d3.json "/api/nestedTag/#{window.hashtag}", (data) ->
+    width = 720
+    height = 720
+    radius = Math.min(width, height) / 2
+
+    color = d3.scale.category20()
+
+    pie = d3.layout.pie()
+      .sort(null)
+
+    arc = d3.svg.arc()
+      .innerRadius(radius - 100)
+      .outerRadius(radius - 20)
+
+    svg = d3.select("#content").append("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .attr("id", "mainsvg")
+      .append("g")
+        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
+
     childNode = window.document.getElementById 'oldmainsvg'
     if childNode?
       childNode.parentNode.removeChild childNode
