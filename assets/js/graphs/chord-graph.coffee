@@ -17,7 +17,7 @@ layout = d3.layout.chord()
 path = d3.svg.chord()
   .radius(innerRadius)
 
-svg = d3.select("body").append("svg")
+svg = d3.select("#content").append("svg")
     .attr("width", width)
     .attr("height", height)
   .append("g")
@@ -37,17 +37,11 @@ d3.json "/api/tag/#{window.hashtag}", (data) ->
     chord.classed "fade", (p) ->
       p.source.index != i && p.target.index != i
 
-  mouseout = (d, i) ->
-    console.log "Source index #{i}"
-    console.log d
-    chord.classed "fade", (p) -> false
-
   group = svg.selectAll(".group")
       .data(layout.groups)
     .enter().append("g")
       .attr("class", "group")
       .on("mouseover", mouseover)
-      .on("mouseout", mouseout)
 
   group.append("title").text (d, i) ->
     data.data[i].name
