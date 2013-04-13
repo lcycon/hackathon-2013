@@ -27,7 +27,16 @@ svg = d3.select("#content").append("svg")
 svg.append("circle")
   .attr("r", outerRadius)
 
+colors = d3.scale.category20()
+
 d3.json "/api/tag/#{window.hashtag}", (data) ->
+
+  data.data = data.data.map (obj) ->
+    newObj = obj
+    newObj.color = colors(newObj.name)
+    newObj
+
+  console.log data
 
   window.spinner.stop()
   document.getElementById("spin").style.display = "none"

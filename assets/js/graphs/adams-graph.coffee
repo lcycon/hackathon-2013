@@ -11,7 +11,6 @@ root = undefined
 API_URL = '/api/user'
 activeD = null
 
-
 tree = d3.layout.tree()
   .size [height, width]
 
@@ -56,9 +55,9 @@ hasChildrenColor = (d) ->
 
 hasChildrenText = (d) ->
   if d.children? or d._children?
-    -10
+    -15
   else
-    10
+    15
 
 
 hasChildrenAnchor = (d) ->
@@ -101,17 +100,18 @@ update = (src) ->
     .style('cursor', (d) -> if d.depth is MAX_EXPAND then 'default')
     .on('click', click)
 
+  colors = d3.scale.category20()
 
   nodeEnter.append('svg:circle')
     .attr('r', SMALL_CIRCLE_RADIUS)
+    .style('fill', (d) -> colors(d.name))
     .style('cursor', (d) -> if d.depth is MAX_EXPAND then 'default')
-    .style('fill', hasChildrenColor)
 
   nodeEnter.append('svg:text')
     .attr('x', hasChildrenText)
     .attr('dy', '.35em')
     .attr('text-anchor', hasChildrenAnchor)
-    .attr('color', 'white')
+    .attr('fill', '#DDD')
     .text((d) -> d.name)
     .style('fill-opacity', SMALL_CIRCLE_RADIUS)
 
@@ -122,7 +122,7 @@ update = (src) ->
 
   nodeUpdate.select('circle')
     .attr('r', BIG_CIRCLE_RADIUS)
-    .style('fill', hasChildrenColor)
+    .style('fill', (d) -> colors(d.name))
 
   nodeUpdate.select('text')
     .style('fill-opacity', 1)

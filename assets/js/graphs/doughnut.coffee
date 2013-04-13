@@ -30,7 +30,7 @@ d3.json "/api/nestedTag/#{window.hashtag}", (data) ->
   svg.append("text")
     .attr("fill", "white")
     .attr("text-anchor", "middle")
-    .attr("font-size", "3em")
+    .style("font-size", "60px")
     .text( (d, i) -> window.hashtag )
 
   groupText = svg.selectAll('.group').append("text")
