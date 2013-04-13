@@ -1,15 +1,14 @@
 !!! 5
 html
   head
-    title= title
+    title= user
     != css('index')
     != css('graph')
 
-  body
-    #header
-    #content
+    script
+      window.user = "#{user}"
 
-    != js('vendor/jquery-1.9.1')
-    != js('vendor/bootstrap')
+  body
+
     != js('vendor/d3')
     != js('graphs/adams-graph')

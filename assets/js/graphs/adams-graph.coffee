@@ -1,12 +1,16 @@
 margin = [20, 120, 20, 120]
 pageW = 960
-pageH = 2200
+pageH = window.outerHeight
 width = pageW - margin[1] - margin[3]
 height = pageH - margin[0] - margin[2]
-SMALL_CIRCLE_RADIUS = 1e-6
-BIG_CIRCLE_RADIUS = 4.5
+SMALL_CIRCLE_RADIUS = 0
+BIG_CIRCLE_RADIUS = 10
+MAX_EXPAND = 3
 index = 0
+expand = 0
 root = undefined
+API_URL = '/api/user'
+activeD = null
 
 
 tree = d3.layout.tree()
@@ -24,23 +28,16 @@ vis = d3.select('body').append('svg:svg')
   .attr('transform', "translate(#{margin[3]}, #{margin[0]})")
 
 
-d3.json '/flare.json', (json) ->
+d3.json "#{API_URL}/#{window.user}", (json) ->
   root = json
-  root.x0 = height / 2
-  root.y0 = 0
+  root.x0 = 0
+  root.y0 = width / 2
 
   toggleAll = (d) ->
     if d.children?
       d.children.forEach toggleAll
       toggle d
-
-  # Initialize the display to show nodes
-  root.children.forEach toggleAll
-  toggle root.children[1]
-  toggle root.children[1].children[2]
-  toggle root.children[9]
-  toggle root.children[9].children[0]
-
+  expand++
   update root
 
 
@@ -66,8 +63,17 @@ hasChildrenAnchor = (d) ->
 
 
 click = (d) ->
-  toggle(d)
-  update(d)
+  if d.children? or d._children? or expand > MAX_EXPAND or activeD is d
+    toggle(d)
+    update(d)
+  else
+    activeD = d
+    d3.json "#{API_URL}/#{d.name}", (data) ->
+      d.children = data.children
+      update(d)
+      expand++
+      d.removeClass('deactive')
+      activeD = null
 
 
 update = (src) ->
@@ -135,8 +141,8 @@ update = (src) ->
       diagonal {source: o, target: o}
     )
     .transition()
-      .duration(duration)
-      .attr('d', diagonal)
+    .duration(duration)
+    .attr('d', diagonal)
 
   link.transition()
     .duration(duration)

@@ -1,4 +1,5 @@
 {EventEmitter} = require 'events'
+config = require '../config'
 
 
 class TagPhotoEmitter extends EventEmitter
@@ -7,7 +8,7 @@ class TagPhotoEmitter extends EventEmitter
   count: 100
 
   constructor: (tag) ->
-    @ig.use {access_token: "38855893.1fb234f.547bd6bab81148daa2bf713e35f25ee0"}
+    @ig.use {access_token: config.ACCESS_TOKEN}
     @tag = tag
 
   run: =>

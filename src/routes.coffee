@@ -7,11 +7,11 @@ module.exports = (app) ->
 
   app.get '/graph/chord/:tag', controllers.example.chord
 
+  app.get '/graph/tree/:user', controllers.example.tree
+
   app.get '/graph/:id', controllers.example.graph
 
   app.get '/api/tag/:tag', (req, res, next) ->
     controllers.api.tag req, res, next
 
-  app.get 'api/user/:user', (req, res, next) ->
-
-  app.get 'ig-redirect/', controllers.api.redirect
+  app.get '/api/user/:user', controllers.user.user

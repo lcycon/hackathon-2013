@@ -5,23 +5,32 @@ config = require '../config'
 
 
 user = (req, res, next) ->
-  ig.authorize_url req.query.code, config.RES_URI, (err, response) ->
+  userName = req.params.user
+  getTopUsers 10, userName, config.ACCESS_TOKEN, (err, us) ->
     if err? then next err
     else
-      getTopUsers 10, result.user.username, result.access_token, (err, us) ->
-        if err? then next err
-        else
-          console.log us
+      json = toJson userName, us
+      res.send json
 
+
+toJson = (userName, friends) ->
+  children = []
+  for f in friends
+    children.push name: f.key
+  {
+    name: userName
+    children: children
+  }
 
 addUsersToHash = (memo, data, cb) ->
   userLikes = (user, cb) ->
+    userName = user.username
     h = {}
-    if memo.user?
-      memo.user += 1
+    if memo[userName]?
+      memo[userName] += 1
       cb null, memo
     else
-      memo.user = 1
+      memo[userName] = 1
       cb null, memo
 
   async.each data.likes.data, userLikes, (err) ->
@@ -31,12 +40,16 @@ addUsersToHash = (memo, data, cb) ->
 
 getTopUsers = (size, userName, accessToken, cb) ->
   ig.use access_token: accessToken
-  ig.user_media_recent @user, count: -1, (err, medias) ->
+  ig.user_search userName, (err, users) ->
     if err? then cb err
     else
-      users = async.reduce medias, {}, addUsersToHash, (err, usrs) ->
+      userId = users[0].id
+      ig.user_media_recent userId, {count: -1}, (err, medias) ->
         if err? then cb err
-        else cb null, topUsers size, usrs
+        else
+          users = async.reduce medias, {}, addUsersToHash, (err, usrs) ->
+            if err? then cb err
+            else cb null, topUsers size, usrs
 
 
 topUsers = (size, users) ->
@@ -57,3 +70,5 @@ topUsers = (size, users) ->
 
     list.slice 0, size
 
+
+exports.user = user
