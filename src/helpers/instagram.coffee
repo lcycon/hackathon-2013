@@ -54,7 +54,6 @@ getHashtag = (hashtag, pcb) ->
         tags[tag] = 1
 
   photos.on 'done', ->
-    console.log "Done"
     arr = []
     arr.push {tag: t, count: c} for t,c of tags
     arr.sort (a, b) ->
