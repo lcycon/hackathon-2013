@@ -1,0 +1,17 @@
+!!! 5
+html
+  head
+    title Wut wut
+    != css('index')
+    != css('graph')
+    != css('chord')
+
+    script
+      window.hashtag = "#{hashtag}";
+      window.App = {};
+  body
+    #header
+    #content
+
+    != js('vendor/d3')
+    != js('graphs/chord-graph')

@@ -45,7 +45,6 @@ getHashtag = (hashtag, pcb) ->
   photos = new TagPhotoEmitter hashtag
 
   photos.on 'photo', (photo) ->
-    console.log "Got a photo!"
     for tag in photo.tags then do (tag) ->
       if tag is hashtag then return
       if tags[tag]?
@@ -59,7 +58,9 @@ getHashtag = (hashtag, pcb) ->
     arr.push {tag: t, count: c} for t,c of tags
     arr.sort (a, b) ->
       b.count - a.count
-    pcb null, arr.slice(0,8)
+    final = {}
+    final[e.tag] = e.count for e in arr.slice(0,8)
+    pcb null, final
 
   photos.run()
 

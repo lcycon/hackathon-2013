@@ -20,7 +20,8 @@
     "wrench": "*",
     "which": "*",
     "clientjade": "latest",
-    "instagram-node": "latest"
+    "instagram-node": "latest",
+    "async": "latest"
   },
   "devDependencies": {
     "fs": "*",
