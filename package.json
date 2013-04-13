@@ -21,7 +21,8 @@
     "which": "*",
     "clientjade": "latest",
     "instagram-node": "latest",
-    "async": "latest"
+    "async": "latest",
+    "underscore": "latest"
   },
   "devDependencies": {
     "fs": "*",

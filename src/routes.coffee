@@ -11,3 +11,7 @@ module.exports = (app) ->
 
   app.get '/api/tag/:tag', (req, res, next) ->
     controllers.api.tag req, res, next
+
+  app.get 'api/user/:user', (req, res, next) ->
+
+  app.get 'ig-redirect/', controllers.api.redirect
