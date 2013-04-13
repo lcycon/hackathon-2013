@@ -9,6 +9,10 @@ html
       window.user = "#{user}"
 
   body
+    #spin
+    #content
 
+    != js('vendor/spin')
+    != js('spinner')
     != js('vendor/d3')
     != js('graphs/adams-graph')

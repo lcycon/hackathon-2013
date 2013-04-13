@@ -5,9 +5,8 @@ width = pageW - margin[1] - margin[3]
 height = pageH - margin[0] - margin[2]
 SMALL_CIRCLE_RADIUS = 0
 BIG_CIRCLE_RADIUS = 10
-MAX_EXPAND = 3
+MAX_EXPAND = 4
 index = 0
-expand = 0
 root = undefined
 API_URL = '/api/user'
 activeD = null
@@ -21,7 +20,7 @@ diagonal = d3.svg.diagonal()
   .projection (d) -> [d.y, d.x]
 
 
-vis = d3.select('body').append('svg:svg')
+vis = d3.select('#content').append('svg:svg')
   .attr('width', pageW)
   .attr('height', pageH)
   .append('svg:g')
@@ -29,21 +28,28 @@ vis = d3.select('body').append('svg:svg')
 
 
 d3.json "#{API_URL}/#{window.user}", (json) ->
+  window.spinner.stop()
+  document.getElementById('spin').style.display = 'none'
+  document.getElementById('content').style.display = 'block'
   root = json
   root.x0 = 0
   root.y0 = width / 2
+  root.depth = 0
+
+  root.children.forEach (d) -> d.depth = 1
 
   toggleAll = (d) ->
     if d.children?
       d.children.forEach toggleAll
       toggle d
-  expand++
   update root
 
 
 hasChildrenColor = (d) ->
   if d._children?
     'lightsteelblue'
+  else if d.depth is MAX_EXPAND
+    '#ccc'
   else
     '#fff'
 
@@ -63,16 +69,15 @@ hasChildrenAnchor = (d) ->
 
 
 click = (d) ->
-  if d.children? or d._children? or expand > MAX_EXPAND or activeD is d
+  if d.children? or d._children? or d.depth >= MAX_EXPAND or activeD is d
     toggle(d)
     update(d)
   else
     activeD = d
     d3.json "#{API_URL}/#{d.name}", (data) ->
+      d.depth += 1
       d.children = data.children
       update(d)
-      expand++
-      d.removeClass('deactive')
       activeD = null
 
 
@@ -93,16 +98,20 @@ update = (src) ->
   nodeEnter = node.enter().append('svg:g')
     .attr('class', 'node')
     .attr('transform', (d) -> "translate(#{src.y0}, #{src.x0})")
+    .style('cursor', (d) -> if d.depth is MAX_EXPAND then 'default')
     .on('click', click)
+
 
   nodeEnter.append('svg:circle')
     .attr('r', SMALL_CIRCLE_RADIUS)
+    .style('cursor', (d) -> if d.depth is MAX_EXPAND then 'default')
     .style('fill', hasChildrenColor)
 
   nodeEnter.append('svg:text')
     .attr('x', hasChildrenText)
     .attr('dy', '.35em')
     .attr('text-anchor', hasChildrenAnchor)
+    .attr('color', 'white')
     .text((d) -> d.name)
     .style('fill-opacity', SMALL_CIRCLE_RADIUS)
 

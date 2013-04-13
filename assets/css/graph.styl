@@ -1,11 +1,18 @@
+#content
+  display none
+  text-align center
+
 .node circle
   cursor pointer
   fill #fff
   stroke steelblue
   stroke-width 1.5px
 
-.node circle.deactive
+.node.deactive circle
+  cursor default
   fill #ccc
+  stroke steelblue
+  stroke-width 1.5px
 
 .node text
   font 11px sans-serif
@@ -14,3 +21,15 @@ path.link
   fill none
   stroke #ccc
   stroke-width 1.5px
+
+html, body
+  color #fff
+  margin 0
+  padding 0
+  height 100%
+  width 100%
+
+#spin
+  height 100%
+  width 100%
+

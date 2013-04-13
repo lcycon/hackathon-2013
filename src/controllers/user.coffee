@@ -43,13 +43,16 @@ getTopUsers = (size, userName, accessToken, cb) ->
   ig.user_search userName, (err, users) ->
     if err? then cb err
     else
-      userId = users[0].id
-      ig.user_media_recent userId, {count: -1}, (err, medias) ->
-        if err? then cb err
-        else
-          users = async.reduce medias, {}, addUsersToHash, (err, usrs) ->
-            if err? then cb err
-            else cb null, topUsers size, usrs
+      if users.length is 0
+        []
+      else
+        userId = users[0].id
+        ig.user_media_recent userId, {count: 60}, (err, medias) ->
+          if err? then cb err
+          else
+            users = async.reduce medias, {}, addUsersToHash, (err, usrs) ->
+              if err? then cb err
+              else cb null, topUsers size, usrs
 
 
 topUsers = (size, users) ->
