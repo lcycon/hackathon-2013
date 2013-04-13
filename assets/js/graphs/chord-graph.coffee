@@ -29,6 +29,10 @@ svg.append("circle")
 
 d3.json "/api/tag/#{window.hashtag}", (data) ->
 
+  window.spinner.stop()
+  document.getElementById("spin").style.display = "none"
+  document.getElementById("content").style.display = "block"
+
   layout.matrix(data.matrix)
 
   mouseover = (d, i) ->
@@ -52,8 +56,10 @@ d3.json "/api/tag/#{window.hashtag}", (data) ->
     .style("fill", (d,i) -> data.data[i].color)
 
   groupText = group.append("text")
-    .attr("x", 6)
+    .attr("x", 4)
     .attr("dy", 15)
+    .attr("fill", "white")
+    .attr("stroke-width", 10)
 
   groupText.append("textPath")
     .attr("xlink:href", (d,i) -> "#group" + i)

@@ -10,7 +10,10 @@ html
       window.App = {};
   body
     #header
+    #spin
     #content
 
+    != js('vendor/spin')
+    != js('spinner')
     != js('vendor/d3')
     != js('graphs/chord-graph')
